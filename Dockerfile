@@ -1,3 +1,10 @@
+# NOTE: NOT used by docker-compose.yaml.
+# The gateway instance's Docker Compose plugin is older than buildx 0.17.0, so
+# `docker compose up --build` fails there. The compose file instead runs a stock
+# python:3.12-slim image and pip-installs at startup (no build step needed).
+# This Dockerfile is kept only for reference / if you upgrade buildx and prefer
+# to bake a prebuilt image.
+
 FROM python:3.12-slim
 
 WORKDIR /app

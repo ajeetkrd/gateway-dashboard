@@ -1,16 +1,27 @@
 services:
   dashboard:
-    build: .
-    image: gateway-dashboard:latest
+    image: python:3.12-slim          # stock image — no build step, no buildx needed
     container_name: gateway-dashboard
+    working_dir: /app
     ports:
-      - "8501:8501"          # exposed on the host so you can reach it (see NOTE)
+      - "8501:8501"                  # exposed on the host (see README for SSM port-forward)
     environment:
-      PGHOST: postgres        # resolves on the gateway's docker network
+      PGHOST: postgres               # resolves on the gateway's docker network
       PGPORT: "5432"
       PGUSER: gw
       PGPASSWORD: gw
       PGDATABASE: gateway
+      PIP_ROOT_USER_ACTION: ignore
+    volumes:
+      - ./app.py:/app/app.py:ro
+      - ./requirements.txt:/app/requirements.txt:ro
+    command: >
+      bash -c "pip install --no-cache-dir -r requirements.txt &&
+               streamlit run app.py
+               --server.address=0.0.0.0
+               --server.port=8501
+               --server.headless=true
+               --browser.gatherUsageStats=false"
     networks:
       - gwnet
     restart: unless-stopped
