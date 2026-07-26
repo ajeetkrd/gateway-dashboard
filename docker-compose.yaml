@@ -1,0 +1,24 @@
+services:
+  dashboard:
+    build: .
+    image: gateway-dashboard:latest
+    container_name: gateway-dashboard
+    ports:
+      - "8501:8501"          # exposed on the host so you can reach it (see NOTE)
+    environment:
+      PGHOST: postgres        # resolves on the gateway's docker network
+      PGPORT: "5432"
+      PGUSER: gw
+      PGPASSWORD: gw
+      PGDATABASE: gateway
+    networks:
+      - gwnet
+    restart: unless-stopped
+
+# Join the network the gateway stack already created.
+# `docker network ls` — it's the one ending in "_gw" (usually gateway_gw).
+# If yours differs, change `name:` below to match.
+networks:
+  gwnet:
+    external: true
+    name: gateway_gw
