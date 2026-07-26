@@ -103,7 +103,7 @@ aws ssm start-session --target <ec2-instance-id> --document-name AWS-StartPortFo
 Example (this deployment):
 
 ```
-aws ssm start-session --target i-04f6e0c3f8f105d02 --document-name AWS-StartPortForwardingSession --parameters '{"portNumber":["8501"],"localPortNumber":["8501"]}' --region ap-south-1
+aws ssm start-session --target i-04f6e0c3f8f1d --document-name AWS-StartPortForwardingSession --parameters '{"portNumber":["8501"],"localPortNumber":["8501"]}' --region ap-south-1
 ```
 
 Then open http://localhost:8501 in your browser.
